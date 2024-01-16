@@ -3,14 +3,16 @@ import 'package:http/http.dart' as http;
 
 class Smer {
   final int id;
-  final String naziv;
+  final String nazivSmera;
+  final String opisSmera;
 
-  Smer({required this.id, required this.naziv});
+  Smer({required this.id, required this.nazivSmera, required this.opisSmera});
 
   factory Smer.fromJson(Map<String, dynamic> json) {
     return Smer(
       id: json['id'],
-      naziv: json['naziv'],
+      nazivSmera: json['nazivSmera'],
+      opisSmera: json['opisSmera'],
     );
   }
 }
@@ -26,12 +28,15 @@ Future<List<Smer>> getSmerovi() async {
   );
 
   if (response.statusCode == 200) {
-    // Ako je status OK (200), parsiraj odgovor
+    // Ako je status OK (200), parsiraj odgovor kao JSON
     List<dynamic> data = json.decode(response.body);
     List<Smer> smerovi = data.map((item) => Smer.fromJson(item)).toList();
+
     return smerovi;
   } else {
     // Ako nije OK, baci izuzetak
+    print('Status code: ${response.statusCode}');
+    print('Response body: ${response.body}');
     throw Exception('Failed to load smerovi');
   }
 }
