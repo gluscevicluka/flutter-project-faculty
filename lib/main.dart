@@ -39,6 +39,12 @@ class BasicScreen extends StatelessWidget {
         child: Image.asset('ef.png'),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.lightBlue,
+        selectedIconTheme: const IconThemeData(color: Colors.white),
+        unselectedIconTheme: const IconThemeData(color: Colors.white),
+        selectedLabelStyle:
+            TextStyle(color: Colors.white), // Boja teksta za odabrane stavke
+        unselectedLabelStyle: TextStyle(color: Colors.white),
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.add_moderator),

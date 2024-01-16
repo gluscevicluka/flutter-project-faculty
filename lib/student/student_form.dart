@@ -1,10 +1,11 @@
-// student_form.dart
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_first_app/student/student_model.dart';
 import 'package:flutter_first_app/smer/smer_model.dart';
 import 'package:flutter_first_app/mesto/mesto_model.dart';
+import 'dart:math';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class StudentForm extends StatefulWidget {
   const StudentForm({Key? key}) : super(key: key);
@@ -30,7 +31,7 @@ class StudentFormState extends State<StudentForm> {
   void initState() {
     super.initState();
     _student = Student(
-      id: 0,
+      id: Random().nextInt(100000),
       brojIndeksa: '',
       ime: '',
       prezime: '',
@@ -77,9 +78,17 @@ class StudentFormState extends State<StudentForm> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Unos studenta'),
+          backgroundColor: Colors.lightBlue,
+          title: const Text('Unos studenta',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              )),
         ),
         body: SingleChildScrollView(
+            child: Center(
+                child: FractionallySizedBox(
+          widthFactor: 0.5,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Form(
@@ -150,6 +159,12 @@ class StudentFormState extends State<StudentForm> {
                         icon: Icon(Icons.date_range),
                       ),
                     ),
+                    validator: (value) {
+                      if (_selectedDate == null) {
+                        return 'Izaberite datum rodjenja';
+                      }
+                      return null;
+                    },
                   ),
                   TextFormField(
                     decoration: const InputDecoration(labelText: 'Email'),
@@ -190,6 +205,8 @@ class StudentFormState extends State<StudentForm> {
                   ),
                   TextFormField(
                     decoration: const InputDecoration(labelText: 'Lozinka'),
+                    obscureText:
+                        true, // Postavite ovo na true da biste zamaglili unos
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Unesite lozinku';
@@ -212,7 +229,7 @@ class StudentFormState extends State<StudentForm> {
                       setState(() {
                         _selectedMestoRodjenja = value;
                         _student =
-                            _student.copyWith(boravakMestoId: value!.idMesto);
+                            _student.copyWith(rodjenjeMestoId: value!.idMesto);
                       });
                     },
                     validator: (value) {
@@ -250,12 +267,22 @@ class StudentFormState extends State<StudentForm> {
                   ),
                   TextFormField(
                     decoration: const InputDecoration(
-                        labelText: 'Upisana godina studija'),
+                      labelText: 'Upisana godina studija',
+                    ),
+                    keyboardType: TextInputType
+                        .number, // Ovo ograničava tastaturu na numerički režim
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Unesite upisanu godinu studija';
                       }
-                      return null;
+
+                      try {
+                        int parsedValue = int.parse(value);
+
+                        return null;
+                      } catch (e) {
+                        return 'Upisana godina studija mora biti ceo broj';
+                      }
                     },
                     onSaved: (value) {
                       _student = _student.copyWith(
@@ -287,20 +314,49 @@ class StudentFormState extends State<StudentForm> {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                     child: ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          _formKey.currentState!.save();
-                          // Ovde pozovite API servis za dodavanje studenta
-                          // Na primer, studentService.addStudent(_student);
+                      onPressed: () async {
+                        try {
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
+                            String apiUrl =
+                                'https://pmappbk2.ddns.net/Student/dodaj_novog_studenta';
+
+                            String jsonBody = jsonEncode(_student.toJson());
+
+                            final response = await http.post(
+                              Uri.parse(apiUrl),
+                              headers: {'Content-Type': 'application/json'},
+                              body: jsonBody,
+                            );
+
+                            if (response.statusCode == 200) {
+                              print('Uspešno dodat student!');
+                              print(response.body);
+                            } else {
+                              print(
+                                  'Greška prilikom dodavanja studenta. Kod greške: ${response.statusCode}');
+                              print(response.body);
+                            }
+                          }
+                        } catch (e, stackTrace) {
+                          print('Greška prilikom slanja zahteva: $e');
+                          print('Stack trace: $stackTrace');
                         }
                       },
-                      child: const Text('Potvrdi'),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blue,
+                        onPrimary: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                      child: const Text('Dodaj studenta'),
                     ),
                   ),
                 ],
               ),
             ),
           ),
-        ));
+        ))));
   }
 }
