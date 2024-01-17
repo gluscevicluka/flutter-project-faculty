@@ -1,5 +1,5 @@
 // student_model.dart
-
+import 'package:intl/intl.dart';
 class Student {
   final int id;
   final String brojIndeksa;
@@ -65,5 +65,24 @@ class Student {
       upisanaGodinaStudije: upisanaGodinaStudije ?? this.upisanaGodinaStudije,
       smerId: smerId ?? this.smerId,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'brojIndeksa': brojIndeksa,
+      'ime': ime,
+      'prezime': prezime,
+      'datumRodjenja': DateFormat("yyyy-MM-dd").format(datumRodjenja),
+      'email': email,
+      'adresaBoravka': adresaBoravka,
+      'telefon': telefon,
+      'lozinka': lozinka,
+      'timestamp': DateFormat("yyyy-MM-dd").format(timestamp),
+      'boravakMestoId': boravakMestoId,
+      'rodjenjeMestoId': rodjenjeMestoId,
+      'upisanaGodinaStudije': upisanaGodinaStudije,
+      'smerId': smerId,
+    };
   }
 }
