@@ -156,7 +156,7 @@ class StudentFormState extends State<StudentForm> {
                             });
                           }
                         },
-                        icon: Icon(Icons.date_range),
+                        icon: const Icon(Icons.date_range),
                       ),
                     ),
                     validator: (value) {

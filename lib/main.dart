@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'student/student_form.dart';
+import 'student/search_students.dart';
 
 void main() {
   runApp(const MyApp());
@@ -42,9 +43,8 @@ class BasicScreen extends StatelessWidget {
         backgroundColor: Colors.lightBlue,
         selectedIconTheme: const IconThemeData(color: Colors.white),
         unselectedIconTheme: const IconThemeData(color: Colors.white),
-        selectedLabelStyle:
-            TextStyle(color: Colors.white), // Boja teksta za odabrane stavke
-        unselectedLabelStyle: TextStyle(color: Colors.white),
+        selectedLabelStyle: const TextStyle(color: Colors.white),
+        unselectedLabelStyle: const TextStyle(color: Colors.white),
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.add_moderator),
@@ -62,7 +62,11 @@ class BasicScreen extends StatelessWidget {
               MaterialPageRoute(builder: (context) => const StudentForm()),
             );
           } else {
-            // Dodajte druge logike navigacije prema potrebi
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const SearchStudentsPage()),
+            );
           }
         },
       ),
