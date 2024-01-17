@@ -36,7 +36,16 @@ class BasicScreen extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Center(
-        child: Image.asset('ef.png'),
+        child: Container(
+          padding: EdgeInsets.all(16.0), // Postavite željeni padding oko slike
+          decoration: BoxDecoration(
+            color: Colors.blue, // Pozadina plava
+            borderRadius: BorderRadius.circular(8.0), // Radijus za border
+            border: Border.all(
+                color: Colors.black, width: 4.0), // Boja i širina bordera
+          ),
+          child: Image.asset('ef.png'),
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.lightBlue,
