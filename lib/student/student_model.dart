@@ -1,5 +1,6 @@
 // student_model.dart
 import 'package:intl/intl.dart';
+
 class Student {
   final int id;
   final String brojIndeksa;
@@ -84,5 +85,24 @@ class Student {
       'upisanaGodinaStudije': upisanaGodinaStudije,
       'smerId': smerId,
     };
+  }
+
+  factory Student.fromJson(Map<String, dynamic> json) {
+    return Student(
+      id: json['id'],
+      brojIndeksa: json['brojIndeksa'],
+      ime: json['ime'],
+      prezime: json['prezime'],
+      datumRodjenja: DateTime.parse(json['datumRodjenja']),
+      email: json['email'],
+      adresaBoravka: json['adresaBoravka'],
+      telefon: json['telefon'],
+      lozinka: json['lozinka'],
+      timestamp: DateTime.parse(json['timestamp']),
+      boravakMestoId: json['boravakMestoId'],
+      rodjenjeMestoId: json['rodjenjeMestoId'],
+      upisanaGodinaStudije: json['upisanaGodinaStudije'],
+      smerId: json['smerId'],
+    );
   }
 }
