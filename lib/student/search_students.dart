@@ -31,7 +31,6 @@ class SearchStudentsPageState extends State<SearchStudentsPage> {
     setState(() {
       _poslednjePrezime = savedPrezime;
       _prezimeController.text = savedPrezime;
-      //Pokrece pretragu ukoliko je sacuvana sesija
       _pretragaStudenata(savedPrezime);
     });
   }
@@ -49,7 +48,6 @@ class SearchStudentsPageState extends State<SearchStudentsPage> {
       final response = await http.get(Uri.parse(apiUrl));
 
       if (response.statusCode == 200) {
-        // Ako je uspešno, dekodirajte JSON odgovor u listu studenata
         List<dynamic> data = jsonDecode(response.body);
         List<Student> rezultati =
             data.map((json) => Student.fromJson(json)).toList();
@@ -58,7 +56,6 @@ class SearchStudentsPageState extends State<SearchStudentsPage> {
           _rezultatiPretrage = rezultati;
         });
       } else {
-        // Ako nije uspešno, tretirajte odgovor prema potrebi
         print(
             'Greška prilikom pretrage studenata. Kod greške: ${response.statusCode}');
         print(response.body);
@@ -93,7 +90,6 @@ class SearchStudentsPageState extends State<SearchStudentsPage> {
                       }
                     },
                   ),
-                  // Prikaz rezultata pretrage koristeći Card widget
                   Expanded(
                     child: ListView.builder(
                       itemCount: _rezultatiPretrage.length,
@@ -108,7 +104,7 @@ class SearchStudentsPageState extends State<SearchStudentsPage> {
                             leading: const CircleAvatar(
                               backgroundImage: AssetImage('assets/hat.png'),
                               radius:
-                                  30, // Prilagodite veličinu kruga prema potrebi
+                                  30,
                             ),
                             title: Text('${student.ime} ${student.prezime}',
                                 style: const TextStyle(
@@ -123,7 +119,6 @@ class SearchStudentsPageState extends State<SearchStudentsPage> {
                                 Text(
                                     'Mesto stanovanja: ${student.adresaBoravka}'),
                                 Text('Broj telefona: ${student.telefon}'),
-                                // Dodajte ostale informacije o studentu prema potrebi
                               ],
                             ),
                           ),

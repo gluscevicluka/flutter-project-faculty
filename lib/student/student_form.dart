@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:flutter_first_app/student/student_model.dart';
 import 'package:flutter_first_app/smer/smer_model.dart';
 import 'package:flutter_first_app/mesto/mesto_model.dart';
-import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -31,7 +30,7 @@ class StudentFormState extends State<StudentForm> {
   void initState() {
     super.initState();
     _student = Student(
-      id: Random().nextInt(100000),
+      id: 0,
       brojIndeksa: '',
       ime: '',
       prezime: '',
@@ -51,7 +50,6 @@ class StudentFormState extends State<StudentForm> {
     _fetchMesta();
   }
 
-  //Preload database fetch data
   Future<void> _fetchSmerovi() async {
     try {
       List<Smer> smerovi = await getSmerovi();
@@ -206,7 +204,7 @@ class StudentFormState extends State<StudentForm> {
                   TextFormField(
                     decoration: const InputDecoration(labelText: 'Lozinka'),
                     obscureText:
-                        true, // Postavite ovo na true da biste zamaglili unos
+                        true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Unesite lozinku';
@@ -270,7 +268,7 @@ class StudentFormState extends State<StudentForm> {
                       labelText: 'Upisana godina studija',
                     ),
                     keyboardType: TextInputType
-                        .number, // Ovo ograničava tastaturu na numerički režim
+                        .number,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Unesite upisanu godinu studija';
